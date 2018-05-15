@@ -8,7 +8,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackMiddleware from 'webpack-dev-middleware'; // eslint-disable-line
 import webpackConfig from '../webpack.config';
 
-import routes from './routes/index';
+import routes from './routes';
 
 dotenv.config();
 

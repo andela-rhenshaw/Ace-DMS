@@ -1,3 +1,11 @@
+/**
+ * Function to sort and order Items in a list
+ * @export
+ * @param {Any} a
+ * @param {Any} b
+ * @param {Any} key
+ * @returns {Array} processedData
+ */
 export function sortFunc(a, b, key) {
   if (typeof (a[key]) === 'number') {
     return a[key] - b[key];
@@ -15,6 +23,12 @@ export function sortFunc(a, b, key) {
   return ax.length - bx.length;
 }
 
+/**
+ * Function to process an Array of data
+ * @export
+ * @param {Array} data
+ * @returns {Array} processedData
+ */
 export function processTableData(data) {
   if (data.constructor === Array) {
     return data.map((obj) => {

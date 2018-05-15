@@ -25,9 +25,10 @@ class Profile extends React.Component {
       user: {}
     } :
     {
-      user: this.props.user
+      user: this.props.user,
+      fullUser: {}
     };
-
+    this.updateFullProfile = this.updateFullProfile.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -54,6 +55,54 @@ class Profile extends React.Component {
   validatePassword() {
     const { password, confirmPassword } = this.state.user;
     return password === confirmPassword && password.trim() !== '';
+  }
+    /**
+   * Function to validate full profile form data
+   * @returns {Boolean} validation status
+   * @memberof Profile
+   */
+  validateForm() {
+    const { user } = this.state;
+    if (!user.firstName) {
+      return false;
+    } else if (!user.lastName) {
+      return false;
+    }
+    return true;
+  }
+    /**
+   * Function to handle updates on full user profiles
+   * @param {Object} e - onClick event
+   * @returns {String} update status
+   * @memberof Profile
+   */
+  updateFullProfile(e) {
+    e.preventDefault();
+    const isValidDetails = this.validateForm();
+    if (isValidDetails) {
+      const status = this.validatePassword();
+      if (status) {
+        const id = this.props.auth.user.id;
+        const user = {
+          password: this.state.user.password,
+          firstName: this.state.user.firstName,
+          lastName: this.state.user.lastName
+        };
+        this.props.actions.editUser(user, id)
+      .then(() => {
+        toastr.success('Profile updated Succesfully');
+        this.setState({ user: {} });
+      }).catch(() => {
+        toastr.error('Invalid details provided!');
+        this.setState({ user: {} });
+      });
+      } else {
+        toastr.error('Invalid Operation! passwords not a match');
+      }
+    } else {
+      toastr.error('Invalid Form Data!');
+      this.setState({ user: {} });
+    }
   }
   /**
    * Function to hnadle password updates
@@ -369,6 +418,91 @@ class Profile extends React.Component {
                       <tr className="clear" />
                     </table>
                   </div>
+                  <div className="clear" />
+                  <div className="clear" />
+                  {!viewMode ?
+                    <Row>
+                      <Col m={4} />
+                      <Col m={4} >
+                        <Modal
+                          actions={
+                          [
+                            <Button
+                              style={{ marginLeft: `${2}em` }}
+                              className="btn-save"
+                              waves="light"
+                              modal="close"
+                              flat
+                            >Close
+                                    </Button>,
+                            <Button
+                              id="sav"
+                              waves="light"
+                              flat
+                              className="btn-save"
+                              onClick={this.updateFullProfile}
+                            >Save
+                                    </Button>
+                          ]
+                            }
+                          trigger={
+                            <Button
+                              id="full-edit"
+                              type="submit"
+                              value="Sign In"
+                            >EDIT FULL PROFILE
+                         </Button>}
+                        >
+                          <Row>
+                            <div className="col s8 push-s2">
+                              <h4 className="user-header">UPDATE PROFILE</h4>
+                              <div>
+                                <label htmlFor="new">First Name</label>
+                                <input
+                                  id="fFirstName"
+                                  type="text"
+                                  placeholder={firstName}
+                                  icon="person_otline"
+                                  onChange={this.onChange}
+                                  name="firstName"
+                                  required
+                                />
+                                <label htmlFor="new">Last Name</label>
+                                <input
+                                  id="fLastName"
+                                  type="text"
+                                  placeholder={lastName}
+                                  icon="person_otline"
+                                  onChange={this.onChange}
+                                  name="lastName"
+                                  required
+                                />
+                                <label htmlFor="new">Password</label>
+                                <input
+                                  id="lastName"
+                                  type="password"
+                                  icon="person_otline"
+                                  onChange={this.onChange}
+                                  name="password"
+                                  required
+                                />
+                                <label htmlFor="new">Comfirm Password</label>
+                                <input
+                                  id="lastName"
+                                  type="password"
+                                  icon="person_otline"
+                                  onChange={this.onChange}
+                                  name="confirmPassword"
+                                  required
+                                />
+                              </div>
+                            </div>
+                          </Row>
+                        </Modal>
+                      </Col>
+                      <Col m={4} />
+                    </Row> : ''
+                  }
                 </div>
                 <div className="clear" />
               </Col>

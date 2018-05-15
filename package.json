@@ -20,7 +20,8 @@
     "dev:hot": "webpack-dev-server --hot --inline --progress --colors --watch --display-error-details --display-cached --content-base ./",
     "lint": "node_modules/.bin/eslint . || true",
     "lint:watch": "npm run lint -- --watch",
-    "cover": "rm -rf coverage/ && NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha -- -R spec server/tests/**/*.spec.js",
+    "cover": "rm -rf coverage/ && NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha -- -R spec client/tests/helpers/browser.js client/tests/**/*.spec.js client/tests/**/**/*.spec.js server/tests/**/*.spec.js",
+    "covers": "rm -rf coverage/ && NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha -- -R spec client/tests/helpers/browser.js client/tests/**/*.spec.js client/tests/**/**/*.spec.js",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
     "postinstall": "npm run migrations && npm run undo:seeds && npm run seeds"
   },

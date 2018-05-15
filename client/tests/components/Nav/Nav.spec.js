@@ -53,6 +53,7 @@ const newProps = {
 
 describe('Navbar', () => {
   let wrapper = shallow(<Navbar {...props} />);
+  console.log('nav-props', wrapper.props());
   it('should have a prop called auth', () => {
     expect(wrapper.props.auth).to.be.defined; // eslint-disable-line
   });
